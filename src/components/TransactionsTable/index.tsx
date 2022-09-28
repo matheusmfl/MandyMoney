@@ -48,11 +48,18 @@ export function TransactionsTable(){
                         return (
                             <tr key={transactions.id}>
                         <td>{transactions.title}</td>
-                        <td className={transactions.type}>{transactions.amount}</td>
+
+                        
+                        <td className={transactions.type}>
+                            {new Intl.NumberFormat('pt-BR' ,
+                            {style: 'currency',
+                            currency: 'BRL'}).format(transactions.amount)}
+                            
+                            </td>
                         <td>{transactions.description}</td>
                         <td>{transactions.createdAt}</td>
                     </tr>
-                        )
+                        ) //usei a API Intl para poder converter o valor númerico em valor de moeda Brasileiro e para converter a data em um formato legível
                     })}
                 </tbody>
             </table>
