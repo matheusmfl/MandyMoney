@@ -1,14 +1,25 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../services/api";
 import { Container } from "./styles";
 
 export function TransactionsTable(){
+    const [transactions, setTransactions] = useState<Transactions[]>([])
+    
     useEffect(() => {
 
         api.get('transactions') //usando o axios não precisamos converter para JSON
-        .then(response => console.log(response.data))  // agora os dadoss não ficam mais em DATA, ficam em response.data
+        .then(response => setTransactions(response.data.transactions))//Tamos pegando o get e salvando no hooker setTransactions  // agora os dadoss não ficam mais em DATA, ficam em response.data
     }, []);
    
+
+    interface Transactions {
+        id: number,
+        title: string,
+        type: string,
+        amount: number,
+        createdAt: string,
+        description: string,
+    }
     return(
 
 
@@ -33,19 +44,16 @@ export function TransactionsTable(){
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td>Computador</td>
-                        <td className="withdraw">-2.500,00$</td>
-                        <td>Peças e Acessórios</td>
-                        <td>13/10/1995</td>
+                    {transactions.map(transactions=> {
+                        return (
+                            <tr key={transactions.id}>
+                        <td>{transactions.title}</td>
+                        <td className={transactions.type}>{transactions.amount}</td>
+                        <td>{transactions.description}</td>
+                        <td>{transactions.createdAt}</td>
                     </tr>
-
-                    <tr>
-                        <td>Venda de site</td>
-                        <td className="deposit">1.000,00$</td>
-                        <td>Serviços</td>
-                        <td>22/09/2022</td>
-                    </tr>
+                        )
+                    })}
                 </tbody>
             </table>
         </Container>

@@ -3,15 +3,32 @@ import { Container, TransactionTypeContainer, RadioBox } from './style'
 import closeModal from '../../assets/xFechar.svg'
 import IncomeImage from '../../assets/Entradas.png'
 import OutcomeImage from '../../assets/Saídas.svg'
-import {useState} from 'react'
+import {FormEvent, useState} from 'react'
+import {api} from '../../services/api'
+
 
 interface newTransactionModalProps {
     isOpen: boolean,
     onRequestClose: () => void
 }
 
+
+
 export function NewTransactionModal({isOpen, onRequestClose}: newTransactionModalProps){
+    const [tytle, setTitle] = useState('')
+    const [value, setValue] = useState(0)
+    const [description, setDescription] = useState('')
     const [type, setType] = useState('deposit')
+    
+
+    function HandleCreateNewTransaction(event: FormEvent) {
+        event.preventDefault()
+        
+       const data = {tytle, value, description, type}
+
+       api.post('/transactions', data)
+        
+    }
 
     return(
         //a estilização desse MODAL está no GlobalStyle
@@ -25,15 +42,31 @@ export function NewTransactionModal({isOpen, onRequestClose}: newTransactionModa
             type='button'
             onClick={onRequestClose}
             className="button-close-modal">
+            
 
             <img src={closeModal} alt="Botão de fechar formulário" />
             </button>
-    <Container>
+
+            
+    <Container onSubmit={HandleCreateNewTransaction}
+    /*Aqui o OnSubmit impede de o formulário recarregar a página ao submitar */
+    // A função que executa o PrevantDefault vem do pacote de formulários do React, chamado FormEvent
+    >  
 
         <h2>Cadastra Transação</h2>    
-        <input placeholder='Titulo' />
+        
+        <input 
+                placeholder='Titulo'  
+                value={tytle}
+                onChange={event => setTitle(
+            event.target.value/*event e event.target.value são valores q existem no onChange, que é a função que caputra aóis a mudança no input*/
+            )}/>  
 
-        <input placeholder='Valor' type='number'/>
+        <input 
+        placeholder='Valor' 
+        value={value} 
+        onChange={event => setValue(Number(event.target.value))} // o Number ta transofrmando o valor do event.target.value em numero, já que o valor default é uma string
+        type='number'/>
         <TransactionTypeContainer>
             
             <RadioBox type='button'
@@ -58,7 +91,10 @@ export function NewTransactionModal({isOpen, onRequestClose}: newTransactionModa
             </RadioBox>
 
         </TransactionTypeContainer>
-        <input placeholder='Categoria' />
+        <input placeholder='Categoria' 
+        value={description} 
+        onChange={event => setDescription(event.target.value)} // o Number ta transofrmando o valor do event.target.value em numero, já que o valor default é uma string
+        />
         <button type="submit">
             Cadastrar
         </button>
