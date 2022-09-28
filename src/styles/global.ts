@@ -57,6 +57,44 @@ export const GlobalStyle = createGlobalStyle`
     h1 , h2, h3, h4, h5, h6, strong {
         font-weight: 600;
     }
+    //estilizando os Modals
+    .react-modal-content{
+        width: 100%;
+        max-width: 576px;
+        background: var(--background);
+        padding: 3rem;
+        position: relative; // esse position serve para posicionar o botão de fechar do Modal, para que ele não va pro canto da tela
+        border-radius: 0.5rem;
 
+
+    }
+
+
+    .react-modal-overlay{
+        background: rgba(0,0,0,0.5);
+        position: fixed; //esse position fixed é pra caso a tela Scrolle, o overlay não se perca
+        top:0;
+        bottom:0;
+        right:0;
+        left:0;
+        // o 0 em todas as direções quer dizer que vai ocupar tudo
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .button-close-modal{
+        position: absolute;
+        right: 1.5rem;
+        top: 1.5rem;
+        border: 0;
+        background: transparent;
+
+        transition: filter 0.2s;
+        &:hover{
+            filter: brightness(0.8)
+        }
+    }
 
 `
