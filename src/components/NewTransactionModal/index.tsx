@@ -1,8 +1,9 @@
 import Modal from 'react-modal'
-import { Container, TransactionTypeContainer } from './style'
+import { Container, TransactionTypeContainer, RadioBox } from './style'
 import closeModal from '../../assets/xFechar.svg'
 import IncomeImage from '../../assets/Entradas.png'
 import OutcomeImage from '../../assets/Saídas.svg'
+import {useState} from 'react'
 
 interface newTransactionModalProps {
     isOpen: boolean,
@@ -10,6 +11,8 @@ interface newTransactionModalProps {
 }
 
 export function NewTransactionModal({isOpen, onRequestClose}: newTransactionModalProps){
+    const [type, setType] = useState('deposit')
+
     return(
         //a estilização desse MODAL está no GlobalStyle
         <Modal 
@@ -33,15 +36,23 @@ export function NewTransactionModal({isOpen, onRequestClose}: newTransactionModa
         <input placeholder='Valor' type='number'/>
         <TransactionTypeContainer>
             
-            <button type='button'>
+            <RadioBox type='button'
+             /*className={type === 'deposit' ? 'active' : ''}*/ 
+             onClick={() => {setType('deposit')}}
+             isActive = {type === 'deposit'} //Propriedade do StyledComponents
+             >
                 <img src={IncomeImage} alt="Imagem de Setinha Verde apontando para cima" />
                 <span>Entrada</span>
-            </button>
+            </RadioBox>
 
-            <button type='button'>
+            <RadioBox type='button'
+             /*className={type === 'withdraw' ? 'active' : ''}*/ 
+             onClick={() => {setType('withdraw')}}
+             isActive = {type === 'withdraw'} //Propriedade do StyledComponents
+             >
                 <img src={OutcomeImage} alt="Imagem de Setinha Vermelha apontando para baixo" />
                 <span>Saída</span>
-            </button>
+            </RadioBox>
 
         </TransactionTypeContainer>
         <input placeholder='Categoria' />
