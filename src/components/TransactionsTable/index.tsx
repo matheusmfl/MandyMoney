@@ -1,25 +1,12 @@
-import { useEffect, useState } from "react";
-import { api } from "../../services/api";
+
+import { useContext } from "react";
+import { TransactionsContext } from "../../TransactionsContext";
 import { Container } from "./styles";
 
 export function TransactionsTable(){
-    const [transactions, setTransactions] = useState<Transactions[]>([])
-    
-    useEffect(() => {
 
-        api.get('transactions') //usando o axios não precisamos converter para JSON
-        .then(response => setTransactions(response.data.transactions))//Tamos pegando o get e salvando no hooker setTransactions  // agora os dadoss não ficam mais em DATA, ficam em response.data
-    }, []);
-   
+    const transactions = useContext(TransactionsContext)
 
-    interface Transactions {
-        id: number,
-        title: string,
-        type: string,
-        amount: number,
-        createdAt: string,
-        description: string,
-    }
     return(
 
 
@@ -57,7 +44,9 @@ export function TransactionsTable(){
                             
                             </td>
                         <td>{transactions.description}</td>
-                        <td>{transactions.createdAt}</td>
+                        <td>
+                        {new Intl.DateTimeFormat('pt-BR').format(new Date(transactions.amount))}
+                        </td>
                     </tr>
                         ) //usei a API Intl para poder converter o valor númerico em valor de moeda Brasileiro e para converter a data em um formato legível
                     })}
@@ -66,3 +55,5 @@ export function TransactionsTable(){
         </Container>
     )
 }
+
+

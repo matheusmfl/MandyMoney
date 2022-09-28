@@ -2,7 +2,13 @@ import {Container} from './styles'
 import setaEntrada from '../../assets/Entradas.png'
 import setaSaida from '../../assets/Saídas.svg'
 import total from '../../assets/Total.svg'
+import { TransactionsContext } from '../../TransactionsContext'
+import { useContext } from 'react'
 export function Summary() {
+
+    const transactions = useContext(TransactionsContext)
+
+    console.log(transactions)
     return (
             <Container>
 
