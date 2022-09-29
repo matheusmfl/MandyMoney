@@ -3,8 +3,9 @@ import { Container, TransactionTypeContainer, RadioBox } from './style'
 import closeModal from '../../assets/xFechar.svg'
 import IncomeImage from '../../assets/Entradas.png'
 import OutcomeImage from '../../assets/Saídas.svg'
-import {FormEvent, useState} from 'react'
-import {api} from '../../services/api'
+import {FormEvent, useState, useContext} from 'react'
+import { TransactionsContext } from '../../TransactionsContext'
+
 
 
 interface newTransactionModalProps {
@@ -15,18 +16,24 @@ interface newTransactionModalProps {
 
 
 export function NewTransactionModal({isOpen, onRequestClose}: newTransactionModalProps){
-    const [tytle, setTitle] = useState('')
-    const [value, setValue] = useState(0)
-    const [description, setDescription] = useState('')
+    const {createTransactions} = useContext(TransactionsContext)
+
+    const [title, setTitle] = useState('')
+    const [amount, setAmount] = useState(0)
+    const [category, setCategory] = useState('')
     const [type, setType] = useState('deposit')
-    
+
 
     function HandleCreateNewTransaction(event: FormEvent) {
         event.preventDefault()
         
-       const data = {tytle, value, description, type}
-
-       api.post('/transactions', data)
+        createTransactions(
+            {type,
+            title,
+            amount,
+            category}
+        )
+     
         
     }
 
@@ -57,15 +64,15 @@ export function NewTransactionModal({isOpen, onRequestClose}: newTransactionModa
         
         <input 
                 placeholder='Titulo'  
-                value={tytle}
+                value={title}
                 onChange={event => setTitle(
             event.target.value/*event e event.target.value são valores q existem no onChange, que é a função que caputra aóis a mudança no input*/
             )}/>  
 
         <input 
         placeholder='Valor' 
-        value={value} 
-        onChange={event => setValue(Number(event.target.value))} // o Number ta transofrmando o valor do event.target.value em numero, já que o valor default é uma string
+        value={amount} 
+        onChange={event => setAmount(Number(event.target.value))} // o Number ta transofrmando o valor do event.target.value em numero, já que o valor default é uma string
         type='number'/>
         <TransactionTypeContainer>
             
@@ -92,8 +99,8 @@ export function NewTransactionModal({isOpen, onRequestClose}: newTransactionModa
 
         </TransactionTypeContainer>
         <input placeholder='Categoria' 
-        value={description} 
-        onChange={event => setDescription(event.target.value)} // o Number ta transofrmando o valor do event.target.value em numero, já que o valor default é uma string
+        value={category} 
+        onChange={event => setCategory(event.target.value)} // o Number ta transofrmando o valor do event.target.value em numero, já que o valor default é uma string
         />
         <button type="submit">
             Cadastrar
