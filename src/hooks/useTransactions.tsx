@@ -1,6 +1,6 @@
 // vide anotações do contexto no Notion
-import { createContext, useState, useEffect, ReactNode } from "react";
-import { api } from "./services/api";
+import { createContext, useState, useEffect, ReactNode, useContext } from "react";
+import { api } from "../services/api";
 
 
 interface Transaction {
@@ -86,5 +86,8 @@ async function createTransactions(transactionInput: TransactionInput) {
 
 
 
-
+export function useTransactions(){
+    const context = useContext(TransactionsContext)
+    return context
+}
 

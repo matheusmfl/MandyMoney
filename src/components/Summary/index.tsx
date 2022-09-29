@@ -2,11 +2,10 @@ import {Container} from './styles'
 import setaEntrada from '../../assets/Entradas.png'
 import setaSaida from '../../assets/Saídas.svg'
 import total from '../../assets/Total.svg'
-import { TransactionsContext } from '../../TransactionsContext'
-import { useContext } from 'react'
+import {  useTransactions } from '../../hooks/useTransactions'
 export function Summary() {
 
-    const {transactions} = useContext(TransactionsContext)
+    const {transactions} = useTransactions()
 
     // usei o Reduce para calcular o total de entradas e saidas e realizar a lógica do Summary
     const summary = transactions.reduce((acc, transaction) => {
