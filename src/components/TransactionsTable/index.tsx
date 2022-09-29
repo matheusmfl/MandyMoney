@@ -5,7 +5,7 @@ import { Container } from "./styles";
 
 export function TransactionsTable(){
 
-    const transactions = useContext(TransactionsContext)
+    const {transactions} = useContext(TransactionsContext)
 
     return(
 
@@ -31,21 +31,21 @@ export function TransactionsTable(){
                 </thead>
 
                 <tbody>
-                    {transactions.map(transactions=> {
+                    {transactions.map(transaction=> {
                         return (
-                            <tr key={transactions.id}>
-                        <td>{transactions.title}</td>
+                            <tr key={transaction.id}>
+                        <td>{transaction.title}</td>
 
                         
-                        <td className={transactions.type}>
+                        <td className={transaction.type}>
                             {new Intl.NumberFormat('pt-BR' ,
                             {style: 'currency',
-                            currency: 'BRL'}).format(transactions.amount)}
+                            currency: 'BRL'}).format(transaction.amount)}
                             
                             </td>
-                        <td>{transactions.description}</td>
+                        <td>{transaction.description}</td>
                         <td>
-                        {new Intl.DateTimeFormat('pt-BR').format(new Date(transactions.amount))}
+                        {new Intl.DateTimeFormat('pt-BR').format(new Date(transaction.amount))}
                         </td>
                     </tr>
                         ) //usei a API Intl para poder converter o valor númerico em valor de moeda Brasileiro e para converter a data em um formato legível

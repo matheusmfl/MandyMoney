@@ -3,7 +3,7 @@ import { createContext, useState, useEffect, ReactNode } from "react";
 import { api } from "./services/api";
 
 
-interface Transactions {
+interface Transaction {
     id: number,
     title: string,
     type: string,
@@ -28,8 +28,8 @@ interface ContextProviderProps
 {children: ReactNode;}
 
 interface TransactionsContextData{
-    transactions: Transactions[],
-    createTransactions: (transaction: TransactionInput) => void
+    transactions: Transaction[],
+    createTransactions: (transaction: TransactionInput) => Promise<void>
 }
 
 
@@ -46,7 +46,7 @@ export const TransactionsContext = createContext<TransactionsContextData>({} as 
 
 export function TransactionsProvider({children}: ContextProviderProps) {
    
-    const [transactions, setTransactions] = useState<Transactions[]>([])
+    const [transactions, setTransactions] = useState<Transaction[]>([])
     
     useEffect(() => {
 
@@ -61,8 +61,11 @@ export function TransactionsProvider({children}: ContextProviderProps) {
 // id e CreatedAt pertencem ao MirageJS
 
 
-function createTransactions(transaction: TransactionInput) {
-    api.post('/transactions', transaction)
+async function createTransactions(transactionInput: TransactionInput) {
+   const response = await api.post('/transactions', transactionInput)
+   const { transaction } = response.data
+
+   setTransactions([...transactions, transaction])
 }
     //agora o Value não pode retornar somente a transactions, ele também precisa retornar a CreateTransactions para herdar la no NewTransactionsModal
     // agora vou ter que retornar um Objeto dentro de Value, pois ele receberá Transactions e a função CreateTransactions
